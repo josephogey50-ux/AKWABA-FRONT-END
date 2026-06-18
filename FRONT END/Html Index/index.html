@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AKWABA 001 - Nigerian Passport Travels Portal">
+  <meta name="theme-color" content="#006b3f">
+  <title>AKWABA 001 - Live Deployment Studio</title>
+  <style>
+    :root {
+      --red:          #ce1126;
+      --gold:         #fcd116;
+      --green:        #006b3f;
+      --green-dark:   #004d2e;
+      --black:        #000000;
+      --bg:           #f3f4f6;
+      --card-bg:      rgba(255, 255, 255, 0.98);
+      --text:         #111827;
+      --text-muted:   #4b5563;
+      --border:       #e5e7eb;
+      --radius:       16px;
+      --transition:   all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ── Branded Header Bar ── */
+    .brand-header-bar {
+      width: 100%;
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+
+    .brand-logo {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* ── Hero with Image Banner background ── */
+    .hero {
+      width: 100%;
+      min-height: 75vh;
+      background: linear-gradient(135deg, rgba(0,107,63,0.85) 0%, rgba(0,77,46,0.95) 100%), url('banner.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      z-index: 1;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: .5rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,.4);
+    }
+
+    .hero .subtitle {
+      font-family: Georgia, Cambria, serif;
+      font-size: 2rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: .15em;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: .95;
+      text-shadow: 0 2px 6px rgba(0,0,0,.4);
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      padding: 16px 40px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--transition);
+      box-shadow: 0 8px 16px rgba(0,0,0,.3);
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.4);
+      background: white;
+    }
+
+    /* ── Layout ── */
+    .main {
+      width: 100%;
+      max-width: 700px;
+      padding: 4rem 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,.15);
+      border-top: 6px solid var(--green);
+      overflow: hidden;
+    }
+
+    .card-banner {
+      width: 100%;
+      height: 140px;
+      background: linear-gradient(135deg, rgba(252,209,22,0.1) 0%, rgba(206,17,38,0.1) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .card-banner img {
+      height: 55px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-banner h2 {
+      font-size: 1.25rem;
+      color: var(--green-dark);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-body { padding: 2.5rem; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      background: #e5e7eb;
+      padding: .35rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      gap: .25rem;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: .75rem 1rem;
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      border-radius: 6px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .tabs button.active {
+      background: white;
+      color: var(--red);
+      box-shadow: 0 2px 4px rgba(0,0,0,.08);
+    }
+
+    /* ── Form View Transitions ── */
+    .form-step-panel {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .form-step-panel.fade-out {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .form-step-panel.fade-in-primed {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    /* ── Form elements ── */
+    .form-group { margin-bottom: 1.5rem; }
+
+    label {
+      display: block;
+      margin-bottom: .5rem;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: .875rem 1rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #f9fafb;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(0,107,63,.15);
+    }
+
+    .helper { color: var(--text-muted); font-size: .8rem; margin-top: .35rem; display: block; }
+    .forgot { color: var(--red); font-size: .85rem; font-weight: 700; display: block; margin-top: .5rem; text-align: right; cursor: pointer; }
+
+    /* ── Password field ── */
+    .pw-wrap { position: relative; display: flex; align-items: center; }
+    .pw-wrap input { padding-right: 3.5rem; }
+
+    .peep-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--red);
+      font-size: .75rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: .5rem;
+      user-select: none;
+      transition: var(--transition);
+    }
+    .peep-btn:hover { color: var(--green); }
+
+    /* ── Document cards ── */
+    .doc-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: .5rem;
+    }
+
+    .doc-card {
+      border: 2px solid #d1d5db;
+      border-radius: 10px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: white;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+    }
+    .doc-card .icon { font-size: 2.5rem; }
+    .doc-card p    { font-size: .85rem; font-weight: 700; }
+    .doc-card:hover    { border-color: var(--gold); transform: translateY(-2px); }
+    .doc-card.selected { border-color: var(--green); background: #f0fdf4; box-shadow: 0 4px 12px rgba(0, 107, 63, 0.1); }
+
+    /* ── Bank details ── */
+    .bank-box {
+      background: #f0fdf4;
+      border: 2px dashed var(--green);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+    }
+    .bank-box p        { font-size: .95rem; line-height: 1.6; color: var(--green-dark); margin-bottom: .5rem; }
+    .bank-box .warning {
+      font-size: .85rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--green);
+      color: #b91c1c;
+      font-weight: 700;
+    }
+    .bank-box a        { color: var(--red); text-decoration: none; font-weight: 700; }
+    .bank-box a:hover  { text-decoration: underline; }
+
+    /* ── Buttons ── */
+    .btn {
+      background: var(--black);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: var(--transition);
+      margin-top: .5rem;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      text-align: center;
+      display: block;
+      text-decoration: none;
+    }
+    .btn:hover        { background: #1f2937;           transform: translateY(-2px); }
+    .btn-red:hover    { background: #b00e20; }
+    .btn-red          { background: var(--red); }
+    .btn-green        { background: var(--green); }
+    .btn-green:hover  { background: var(--green-dark); }
+    .btn-grey         { background: #9ca3af; }
+    .btn-grey:hover   { background: #6b7280; }
+
+    /* ── Step indicator ── */
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      font-size: .75rem;
+      font-weight: 800;
+      color: #9ca3af;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 0.5rem;
+    }
+    .steps span {
+      flex: 1;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      position: relative;
+      transition: var(--transition);
+      text-transform: uppercase;
+    }
+    .steps span.active    { color: var(--red); }
+    .steps span.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+    }
+    .steps span.done      { color: var(--green); }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      border-left: 3px solid var(--gold);
+      padding-left: .75rem;
+      margin: 2rem 0 1rem;
+    }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+
+    /* ── Advanced Mobile Responsive Rules ── */
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+      .form-actions { grid-template-columns: 1fr; gap: 0; }
+      .form-actions button:nth-child(2) { margin-top: 1rem; }
+      .card-body { padding: 1.5rem; }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        border-bottom: none;
+      }
+      .steps span {
+        background: #e5e7eb;
+        padding: 6px 4px;
+        border-radius: 4px;
+        font-size: 0.65rem;
+      }
+      .steps span.active {
+        background: var(--red);
+        color: white;
+      }
+      .steps span.active::after { display: none; }
+      .steps span.done {
+        background: #d1fae5;
+        color: var(--green);
+      }
+      .doc-cards {
+        grid-template-columns: 1fr;
+      }
+      .doc-card {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+      .doc-card .icon { font-size: 1.8rem; }
+    }
+
+    /* ── Modern File Upload Zone ── */
+    .upload-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      background: #f9fafb;
+      transition: var(--transition);
+      position: relative;
+    }
+    .upload-zone.dragover {
+      border-color: var(--green);
+      background: #e8f5e9;
+      transform: scale(1.02);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: .9rem;
+      color: var(--text-muted);
+      padding: 1.5rem;
+    }
+    .footer a { color: var(--green); text-decoration: none; font-weight: 700; }
+    .footer a:hover { text-decoration: underline; }
+
+    .hidden { display: none !important; }
+
+    /* ── Toast Notifications ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+      z-index: 1000;
+      animation: slideIn .3s ease-out;
+      font-weight: 600;
+      max-width: calc(100vw - 4rem);
+    }
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to   { transform: translateX(0);      opacity: 1; }
+    }
+    .toast.success { border-left: 4px solid var(--green); color: var(--green-dark); }
+    .toast.error   { border-left: 4px solid var(--red);   color: #b91c1c; }
+  </style>
+</head>
+<body>
+
+<nav class="brand-header-bar">
+  <img src="logo.png" alt="Nigerian Passport Travels Logo" class="brand-logo">
+</nav>
+
+<header class="hero">
+  <div class="hero-content">
+    <h1>Nigerian Passport Travels</h1>
+    <div class="subtitle">Akwaba 001</div>
+    <p>Experience seamless road trip deployments, live logistics tracking, and verified regional clearance workflows in one centralized environment.</p>
+    <button class="hero-btn" onclick="scrollToPortal()">Proceed</button>
+  </div>
+</header>
+
+<main class="main" id="portal">
+  <div class="card">
+
+    <div class="card-banner">
+      <img src="logo.png" alt="Portal Logo">
+      <h2>Welcome</h2>
+    </div>
+
+    <div class="card-body">
+
+      <div class="tabs">
+        <button class="active" id="btn-register" type="button" onclick="switchTab('register')">New Registration</button>
+        <button id="btn-login" type="button" onclick="switchTab('login')">Participant Dashboard</button>
+      </div>
+
+      <div id="register-container">
+        <form id="registrationForm" action="/api/register" method="POST" enctype="multipart/form-data" novalidate>
+
+          <div id="page-1" class="form-step-panel">
+            <div class="steps">
+              <span class="active">Profile</span>
+              <span>Logistics</span>
+              <span>Checkout</span>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" placeholder="As written on ID" required>
+              </div>
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="As written on ID" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="name@example.com" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">WhatsApp Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="+234..." required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">4-Digit Account PIN</label>
+              <div class="pw-wrap">
+                <input type="password" id="password" name="pin" pattern="[0-9]{4}" inputmode="numeric" maxlength="4" placeholder="••••" required>
+                <button type="button" class="peep-btn" onclick="togglePeep('password', this)">PEEP</button>
+              </div>
+              <span class="helper">Remember this PIN to log in to your dashboard.</span>
+            </div>
+
+            <button type="button" class="btn btn-red" onclick="processStepTransition(1, 2)">Next: Travel Logistics →</button>
+          </div>
+
+          <div id="page-2" class="form-step-panel hidden">
+            <div class="steps">
+              <span class="done">✓ Profile</span>
+              <span class="active">Logistics</span>
+              <span>Checkout</span>
+            </div>
+
+            <div class="section-title">🛂 Travel Document</div>
+            <div class="form-group">
+              <label>Select Document Type</label>
+              <div class="doc-cards" role="group" aria-label="Travel Document Option">
+                <div class="doc-card selected" data-value="International Passport" onclick="selectDoc(this)">
+                  <div class="icon">📕</div>
+                  <p>Int. Passport</p>
+                </div>
+                <div class="doc-card" data-value="ECOWAS Passport" onclick="selectDoc(this)">
+                  <div class="icon">📗</div>
+                  <p>ECOWAS Slip</p>
+                </div>
+                <div class="doc-card" data-value="NIN" onclick="selectDoc(this)">
+                  <div class="icon">🆔</div>
+                  <p>NIN Card</p>
+                </div>
+              </div>
+              <input type="hidden" id="docType" name="docType" value="International Passport">
+            </div>
+
+            <div class="section-title">🏨 Room Allocation</div>
+            <div class="form-group">
+              <label for="roomPreference">Room Preference</label>
+              <select id="roomPreference" name="roomPreference" onchange="toggleRoommate()" required>
+                <option value="match">Solo (Match me with a same-sex roommate)</option>
+                <option value="paired">Paired (Traveling with a designated partner)</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="roommateField">
+              <label for="roommateName">Roommate's Full Name</label>
+              <input type="text" id="roommateName" name="roommateName" placeholder="Enter your partner's exact name">
+            </div>
+
+            <div class="form-group">
+              <label for="emergencyContact">Emergency Contact (Next of Kin)</label>
+              <input type="text" id="emergencyContact" name="emergencyContact" placeholder="e.g. Jane Doe (+234 803...)" required>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-grey" onclick="processStepTransition(2, 1)">← Back</button>
+              <button type="button" class="btn btn-red" onclick="processStepTransition(2, 3)">Next: Checkout →</button>
+            </div>
+          </div>
+
+          <div id="page-3" class="form-step-panel hidden">
+            <div class="steps">
+              <span class="done">✓ Profile</span>
+              <span class="done">✓ Logistics</span>
+              <span class="active">Checkout</span>
+            </div>
+
+            <div class="section-title">💳 Payment Plan</div>
+            <div class="form-group">
+              <label for="plan">Select Plan</label>
+              <select id="plan" name="plan" required>
+                <option value="Full Payment">Full Payment — ₦385,000</option>
+                <option value="Installment Plan">Installment — Min. deposit ₦100,000</option>
+              </select>
+            </div>
+
+            <div class="bank-box">
+              <p><strong>Bank:</strong> MONIEPOINT</p>
+              <p><strong>Account Number:</strong> 6166119553</p>
+              <p><strong>Account Name:</strong> TrootServices</p>
+              <p class="warning">⚠️ After payment, send your receipt via WhatsApp to <a href="https://wa.me/2348064749255" target="_blank">+234 806 474 9255</a></p>
+            </div>
+
+            <div class="form-group">
+              <label>Upload Payment Receipt (Image or PDF)</label>
+              <div class="upload-zone" id="dropZone">
+                <input type="file" id="receipt" name="receipt" accept="image/jpeg,image/png,application/pdf" required>
+                <p id="receipt-label">📁 Click or Drag & Drop payment receipt here</p>
+                <p style="font-size:.8rem; color:var(--text-muted); margin-top:.5rem;">Max 5MB · JPG, PNG, or PDF</p>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-grey" onclick="processStepTransition(3, 2)">← Back</button>
+              <button type="submit" class="btn btn-green">Complete Registration</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div id="login-container" class="hidden">
+        <form id="loginForm" action="/api/login" method="POST">
+          <div class="form-group">
+            <label for="loginPhone">Registered Phone Number</label>
+            <input type="tel" id="loginPhone" name="loginPhone" placeholder="+234..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPin">4-Digit PIN</label>
+            <div class="pw-wrap">
+              <input type="password" id="loginPin" name="loginPin" pattern="[0-9]{4}" inputmode="numeric" maxlength="4" placeholder="••••" required>
+              <button type="button" class="peep-btn" onclick="togglePeep('loginPin', this)">PEEP</button>
+            </div>
+            <a class="forgot" onclick="showToast('Password recovery triggered!', 'success')">Forgot PIN?</a>
+          </div>
+
+          <button type="submit" class="btn btn-red">Access Dashboard →</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    Questions? Call or WhatsApp us: <a href="https://wa.me/2348064749255" target="_blank">+234 806 474 9255</a>
+  </footer>
+</main>
+
+<script>
+  let currentPage = 1;
+  const LOCAL_STORAGE_KEY = 'akwaba_registration_draft';
+
+  function scrollToPortal() {
+    document.getElementById('portal').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function switchTab(tab) {
+    const isRegister = tab === 'register';
+    document.getElementById('register-container').classList.toggle('hidden', !isRegister);
+    document.getElementById('login-container').classList.toggle('hidden', isRegister);
+    document.getElementById('btn-register').classList.toggle('active', isRegister);
+    document.getElementById('btn-login').classList.toggle('active', !isRegister);
+    if (isRegister) {
+      processStepTransition(currentPage, currentPage, true);
+    }
+  }
+
+  function togglePeep(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'HIDE' : 'PEEP';
+  }
+
+  function selectDoc(element) {
+    document.querySelectorAll('.doc-card').forEach(c => c.classList.remove('selected'));
+    element.classList.add('selected');
+    const chosenVal = element.getAttribute('data-value');
+    document.getElementById('docType').value = chosenVal;
+    saveFormToStorage();
+  }
+
+  function toggleRoommate() {
+    const isPaired = document.getElementById('roomPreference').value === 'paired';
+    const field = document.getElementById('roommateField');
+    const input = document.getElementById('roommateName');
+    
+    if (field && input) {
+      field.classList.toggle('hidden', !isPaired);
+      input.required = isPaired;
+      if (!isPaired) input.value = '';
+    }
+    saveFormToStorage();
+  }
+
+  function processStepTransition(fromStep, toStep, instantaneous = false) {
+    const activePanel = document.getElementById(`page-${fromStep}`);
+    const targetPanel = document.getElementById(`page-${toStep}`);
+
+    if (!activePanel || !targetPanel) return;
+
+    if (toStep > fromStep && !instantaneous) {
+      const inputs = activePanel.querySelectorAll('input[required], select[required]');
+      const valid = [...inputs].every(i => {
+        if (!i.checkValidity()) {
+          i.reportValidity();
+          return false;
+        }
+        return true;
+      });
+      if (!valid) return;
+    }
+
+    if (instantaneous) {
+      document.querySelectorAll('.form-step-panel').forEach(p => p.classList.add('hidden'));
+      targetPanel.classList.remove('hidden');
+      currentPage = toStep;
+      return;
+    }
+
+    activePanel.classList.add('fade-out');
+
+    setTimeout(() => {
+      activePanel.classList.add('hidden');
+      activePanel.classList.remove('fade-out');
+
+      targetPanel.classList.add('fade-in-primed');
+      targetPanel.classList.remove('hidden');
+
+      requestAnimationFrame(() => {
+        targetPanel.classList.remove('fade-in-primed');
+      });
+
+      currentPage = toStep;
+    }, 300);
+  }
+
+  function saveFormToStorage() {
+    const form = document.getElementById('registrationForm');
+    if (!form) return;
+    const formData = new FormData(form);
+    const serializedData = {};
+
+    for (let [key, value] of formData.entries()) {
+      if (key !== 'receipt') { 
+        serializedData[key] = value;
+      }
+    }
+    serializedData['_saved_page'] = currentPage;
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(serializedData));
+  }
+
+  function restoreFormFromStorage() {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!stored) return;
+
+    try {
+      const data = JSON.parse(stored);
+      const form = document.getElementById('registrationForm');
+      if (!form) return;
+
+      Object.keys(data).forEach(key => {
+        const input = form.elements[key];
+        if (input && key !== '_saved_page') {
+          input.value = data[key];
+        }
+      });
+
+      if (data.docType) {
+        document.getElementById('docType').value = data.docType;
+        document.querySelectorAll('.doc-card').forEach(card => {
+          if (card.getAttribute('data-value') === data.docType) {
+            card.classList.add('selected');
+          } else {
+            card.classList.remove('selected');
+          }
+        });
+      }
+
+      toggleRoommate();
+
+      if (data._saved_page) {
+        processStepTransition(1, parseInt(data._saved_page, 10), true);
+      }
+    } catch (e) {
+      console.error("Failed to restore cached form state", e);
+    }
+  }
+
+  function initDragAndDrop() {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('receipt');
+    const label = document.getElementById('receipt-label');
+
+    if (!dropZone || !fileInput) return;
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length) {
+        fileInput.files = files;
+        validateAndDisplayFile(files[0]);
+      }
+    }, false);
+
+    fileInput.addEventListener('change', (e) => {
+      if (fileInput.files.length) {
+        validateAndDisplayFile(fileInput.files[0]);
+      }
+    });
+
+    function validateAndDisplayFile(file) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+      const maxSize = 5 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        showToast('Invalid file format. Upload JPG, PNG, or PDF only.', 'error');
+        fileInput.value = '';
+        label.textContent = '📁 Click or Drag & Drop payment receipt here';
+        return;
+      }
+
+      if (file.size > maxSize) {
+        showToast('File size exceeds the 5MB ceiling.', 'error');
+        fileInput.value = '';
+        label.textContent = '📁 Click or Drag & Drop payment receipt here';
+        return;
+      }
+
+      label.textContent = `✅ ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`;
+    }
+  }
+
+  function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    restoreFormFromStorage();
+    initDragAndDrop();
+
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+      registrationForm.addEventListener('input', saveFormToStorage);
+      registrationForm.addEventListener('change', saveFormToStorage);
+
+      registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const panels = registrationForm.querySelectorAll('.form-step-panel');
+        let firstInvalidStep = null;
+
+        for (let i = 0; i < panels.length; i++) {
+          const requiredElements = panels[i].querySelectorAll('input[required], select[required]');
+          const isStepValid = [...requiredElements].every(el => el.checkValidity());
+          
+          if (!isStepValid) {
+            firstInvalidStep = i + 1;
+            [...requiredElements].forEach(el => el.reportValidity());
+            break;
+          }
+        }
+
+        if (firstInvalidStep !== null) {
+          showToast(`Please clear form structural validation issues on Step ${firstInvalidStep}.`, 'error');
+          processStepTransition(currentPage, firstInvalidStep);
+          return;
+        }
+
+        showToast('Processing Secure Submission Pipeline...', 'success');
+        const payload = new FormData(this);
+        console.log('Submission Payload ready for server dispatch:', Object.fromEntries(payload.entries()));
+      });
+    }
+  });
+</script>
+</body>
+</html>

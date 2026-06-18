@@ -1,0 +1,168 @@
+/* ── 1. GLOBAL STYLES & RESET ── */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    padding-bottom: 60px;
+}
+
+/* ── 2. HERO BANNER DESIGN ── */
+.hero-banner {
+    background: linear-gradient(135deg, #006643 0%, #00442e 100%); /* Deep African Green gradient */
+    color: #ffffff;
+    text-align: center;
+    padding: 50px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.hero-banner h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.hero-banner .sub-text {
+    font-size: 1.1rem;
+    color: #ffcc00; /* Warm Accent Yellow */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ── 3. LAYOUT CONTAINER ── */
+.form-container {
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* ── 4. FORM STEPS & PANELS ── */
+.form-step-panel {
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #e1e8e5;
+}
+
+.form-step-panel:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-step-panel h2 {
+    font-size: 1.4rem;
+    color: #006643;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* ── 5. FORM INPUT ELEMENTS ── */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #4a5568;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="tel"],
+.input-group input[type="password"],
+.input-group select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #006643;
+    box-shadow: 0 0 0 3px rgba(0, 102, 67, 0.15);
+}
+
+/* File Input Wrapper styling */
+.input-group input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ── 6. SECURE BANNER NOTE BOX ── */
+.payment-instructions {
+    background-color: #f0fdf4;
+    border-left: 4px solid #006643;
+    padding: 15px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+}
+
+.payment-instructions blockquote {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #bbf7d0;
+    font-family: monospace;
+    color: #166534;
+}
+
+/* ── 7. ANIMATED BUTTON SYSTEM ── */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #006643;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.submit-btn:hover {
+    background-color: #00442e;
+}
+
+/* ── 8. FOOTER NAVIGATION LINKS ── */
+.form-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95rem;
+}
+
+.form-footer a {
+    color: #006643;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
