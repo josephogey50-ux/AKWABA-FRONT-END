@@ -11,15 +11,37 @@ body {
     color: #333;
     line-height: 1.6;
     padding-bottom: 60px;
+    /* Forces elements to stack naturally vertically top-to-bottom */
+    display: block; 
+    width: 100%;
+}
+
+/* Ensure the header branding spans the full width of the view */
+.brand-header-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.brand-logo {
+    max-height: 50px;
+    object-fit: contain;
 }
 
 /* ── 2. HERO BANNER DESIGN ── */
 .hero-banner {
-    background: linear-gradient(135deg, #006643 0%, #00442e 100%); /* Deep African Green gradient */
+    /* Using lowercase ban1.png to prevent case-sensitivity bugs on Netlify Linux builds */
+    background: linear-gradient(135deg, rgba(0, 102, 67, 0.88) 0%, rgba(0, 68, 46, 0.96) 100%), url('ban1.png') no-repeat center center; 
+    background-size: cover;
     color: #ffffff;
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
 }
 
 .hero-banner h1 {

@@ -6,6 +6,9 @@
   <meta name="description" content="AKWABA 001 - Nigerian Passport Travels Portal">
   <meta name="theme-color" content="#006b3f">
   <title>AKWABA 001 - Live Deployment Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
       --red:          #ce1126;
@@ -61,10 +64,9 @@
     .hero {
       width: 100%;
       min-height: 75vh;
-      /* The linear-gradient overlays the green color dynamically onto your banner asset */
       background: linear-gradient(135deg, rgba(0, 107, 63, 0.88) 0%, rgba(0, 77, 46, 0.96) 100%), url('ban1.png') no-repeat center center;
       background-size: cover;
-      background-attachment: fixed; /* Parallax effect for depth */
+      background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -95,6 +97,7 @@
     }
 
     .hero .subtitle {
+      font-family: 'Dancing Script', Georgia, cursive;
       font-family: Georgia, Cambria, serif;
       font-size: 2rem;
       font-weight: 300;
@@ -105,12 +108,16 @@
       text-shadow: 0 2px 8px rgba(0,0,0,.5);
     }
 
-    .hero p {
+    /* ── Rotating Tagline ── */
+    #rotating-tagline {
       font-size: 1.2rem;
       margin-bottom: 2rem;
       line-height: 1.6;
-      opacity: .95;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
       text-shadow: 0 2px 6px rgba(0,0,0,.5);
+      min-height: 80px;
     }
 
     .hero-btn {
@@ -153,7 +160,6 @@
     .card-banner {
       width: 100%;
       height: 140px;
-      /* Gradient completely removed - displays your raw background image directly */
       background: url('ban2.png') no-repeat center center;
       background-size: cover;
       display: flex;
@@ -502,7 +508,6 @@
 <body>
 
 <nav class="brand-header-bar">
-  <nav class="brand-header-bar">
   <img src="logo.png" alt="Nigerian Passport Travels Logo" class="brand-logo">
 </nav>
 
@@ -510,7 +515,7 @@
   <div class="hero-content">
     <h1>Nigerian Passport Travels</h1>
     <div class="subtitle">Akwaba 001</div>
-    <p>Experience seamless road trip deployments, live logistics tracking, and verified regional clearance workflows in one centralized environment.</p>
+    <p id="rotating-tagline"></p>
     <button class="hero-btn" onclick="scrollToPortal()">Proceed</button>
   </div>
 </header>
@@ -519,7 +524,7 @@
   <div class="card">
 
     <div class="card-banner">
-      
+      <h2></h2>
     </div>
 
     <div class="card-body">
@@ -637,7 +642,7 @@
               <label for="plan">Select Plan</label>
               <select id="plan" name="plan" required>
                 <option value="Full Payment">Full Payment — ₦385,000</option>
-                <option value="Installment Plan">Installment — Min. deposit ₦100,000</option>
+                <option value="Installment Plan">Installment — Min. deposit ₦25,000</option>
               </select>
             </div>
 
@@ -732,7 +737,7 @@
     const isPaired = document.getElementById('roomPreference').value === 'paired';
     const field = document.getElementById('roommateField');
     const input = document.getElementById('roommateName');
-    
+
     if (field && input) {
       field.classList.toggle('hidden', !isPaired);
       input.required = isPaired;
@@ -790,7 +795,7 @@
     const serializedData = {};
 
     for (let [key, value] of formData.entries()) {
-      if (key !== 'receipt') { 
+      if (key !== 'receipt') {
         serializedData[key] = value;
       }
     }
@@ -901,9 +906,41 @@
     setTimeout(() => toast.remove(), 4000);
   }
 
+  // ── Rotating Tagline ──
+  function initRotatingTagline() {
+    const taglines = [
+      "Step beyond your borders. Travel is the education no classroom can offer — discover new cultures, forge real connections, and journey alongside people who share your hunger for the world.",
+      "Some trips change your passport. The best ones change your perspective. Join a community of like-minded travellers, build bonds that last beyond the journey, and experience life the way it was meant to be — without borders.",
+      "Travel is the only thing you spend money on that makes you richer. Come explore, connect, and grow alongside people who see the world the way you do.",
+      "There is a whole world outside your street. Come experience it — new cultures, new connections, and people who understand exactly why you had to go. This is not just a trip. This is your education."
+    ];
+
+    const el = document.getElementById('rotating-tagline');
+    let index = 0;
+
+    function showNext() {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(10px)';
+
+      setTimeout(() => {
+        el.textContent = taglines[index];
+        index = (index + 1) % taglines.length;
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 500);
+    }
+
+    // Show first tagline immediately
+    el.textContent = taglines[0];
+    index = 1;
+
+    setInterval(showNext, 4500);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     restoreFormFromStorage();
     initDragAndDrop();
+    initRotatingTagline();
 
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
@@ -919,7 +956,7 @@
         for (let i = 0; i < panels.length; i++) {
           const requiredElements = panels[i].querySelectorAll('input[required], select[required]');
           const isStepValid = [...requiredElements].every(el => el.checkValidity());
-          
+
           if (!isStepValid) {
             firstInvalidStep = i + 1;
             [...requiredElements].forEach(el => el.reportValidity());
@@ -942,5 +979,3 @@
 </script>
 </body>
 </html>
-
-```
